@@ -11,11 +11,11 @@
 #SBATCH --error=errorlog_convert_fq_to_fa
 
 # can load the fastx module
-# module purge all
-# module load fastx_toolkit/0.0.14
+module purge all
+module load fastx_toolkit/0.0.14
 
 # or change the home directory to your own software file path
-export PATH=$PATH:/home/mmf8608/software/bin/
+# export PATH=$PATH:/home/mmf8608/software/bin/
 
 cd /projects/b1052/Wells_b1042/McKenna/training/SG_Metagenome/clean_reads
 
