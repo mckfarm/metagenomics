@@ -10,7 +10,11 @@
 #SBATCH --output=outlog_fastx_trimmer
 #SBATCH --error=errorlog_fastx_trimmer
 
-#change the "/home/ywx1845/software/fastx/" below to the path of the folder in which fastx have installed by you
+# can load the fastx module
+# module purge all
+# module load fastx_toolkit/0.0.14
+
+# or change the home directory to your own software file path
 export PATH=$PATH:/home/mmf8608/software/bin/
 
 cd /projects/b1052/Wells_b1042/McKenna/training/SG_Metagenome/raw_data
