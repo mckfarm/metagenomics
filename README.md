@@ -13,7 +13,7 @@ Workflow as follows (from Yubo)
 
 4) Evaluate assembly results with **quast**
 
-5) Map the reads using **bowtie**, also need to normalize the length of the contigs
+5) Map the reads using **bowtie**, also need to normalize the length of the contigs using a RPKM script
 
 6) Bin genomes using **metabat** or **mmgenome**
 
@@ -28,8 +28,15 @@ Workflow as follows (from Yubo)
 ---
 Helpful links:
 
+Quest
+
+
 [Quest KB home](https://kb.northwestern.edu/72406)
 
 [KB modules management](https://kb.northwestern.edu/70718)
 
 [KB job management](https://kb.northwestern.edu/page.php?id=70710)
+
+Manuals
+
+[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml)
