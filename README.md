@@ -1,8 +1,24 @@
-# Metagenomics
+# Metagenomics analysis on Quest
 
-Workflow and codes for metagenomics pipeline using Quest HPC and other programs. Adapted from Yubo Wang.
+This document is meant to be a resource for learning the basics of metagenomics analysis using a high performance computing cluster like Northwestern's [**Quest**](https://www.it.northwestern.edu/research/user-services/quest/). This document heavily relies on the pipeline documented by Yubo Wang as well as notes from Morgan Petrovich and Jim Griffin.  
+
+This document contains the following sections:
+
+[Getting started](#getting-started) - Information about Quest, programming, and other things you should know   
+[Quest basics](#quest-basics) - Submitting a job, basic commands, and supplementary programs  
+[Metagenomics pipeline](#metagenomics-pipeline) - Steps and programs needed to turn raw data into assembled genomes  
+[Other analyses](#other-analyses) - More things to do besides assembling genomes  
+[Resources](#resources) - Resources for learning more about metagenomics and programming  
 
 ---
+
+## Getting started   
+
+---
+## Quest basics   
+
+---
+## Metagenomics pipeline  
 
 1) Check quality of raw metagenome sequence data using [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - Available as a Quest module, load it in using `module load fastqc/0.11.5`
@@ -47,6 +63,14 @@ Workflow and codes for metagenomics pipeline using Quest HPC and other programs.
 - Blast is available on Quest, though I haven't used it yet. Load it in using `module load blast/2.7.1`
 
 ---
+## Other analyses  
+
+Can directly run raw reads through Blast to see if genes of interest are there
+
+
+
+---
+## Resources  
 Helpful links:
 
 Quest
@@ -60,8 +84,3 @@ Quest
 Manuals
 
 [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml)
-
----
-Other notes:
-
-Can directly run raw reads through Blast to see if genes of interest are there
