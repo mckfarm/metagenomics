@@ -46,6 +46,28 @@ You can also access Quest files using an online service called [Globus](https://
 ---
 ## Quest basics   
 
+Useful commands 
+
+`ssh -X NETID@quest.it.northwestern.edu`
+
+`cd /projects/b1052/Wells_b1042/McKenna/...` - cd sets file path
+
+`pwd` - prints current working directory
+
+`sacct -X` - see what jobs are running and pending
+
+`module avail` - show all available modules
+
+`module avail KEYWORD` - searches all available modules
+
+`module load MODULE NAME` - loads a module
+
+`sprio -j` - shows your priority for jobs
+
+`sbatch --test-only <job_submission_script>` - shows how long you'll wait before your job starts
+
+`checkproject ALLOCATION` - checks the memory of the allocation
+
 ---
 ## Metagenomics pipeline  
 
