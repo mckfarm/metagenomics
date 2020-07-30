@@ -1,4 +1,4 @@
-# Metagenomics analysis on Quest
+# Metagenomics analysis on Quest - work in progress :)
 
 This document is meant to be a resource for learning the basics of metagenomics analysis using a high performance computing cluster like Northwestern's [**Quest**](https://www.it.northwestern.edu/research/user-services/quest/). This document heavily relies on the pipeline documented by Yubo Wang as well as notes from Morgan Petrovich and Jim Griffin.  
 
