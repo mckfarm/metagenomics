@@ -1,4 +1,4 @@
-# Metagenomics analysis on Quest - work in progress :)
+# Metagenomics analysis on Quest
 
 This document is meant to be a resource for learning the basics of metagenomics analysis using a high performance computing cluster like Northwestern's [**Quest**](https://www.it.northwestern.edu/research/user-services/quest/). This document heavily relies on the pipeline documented by Yubo Wang as well as notes from Morgan Petrovich and Jim Griffin.  
 
@@ -41,32 +41,38 @@ You can also access Quest files using an online service called [Globus](https://
 
 **Programming**: Although this guide is primarily focused on writing bash scripts for Quest job submissions, you may eventually need to write codes in another programming language, most likely Python. The easiest way to get started with Python is downloading [Anaconda](https://www.anaconda.com/products/individual), a package manager that includes Python and the popular Jupyter Notebook and Jupyter Lab programs. If you don't have programming experience in any language, attending a class or workshop can be the best way to get started. There is an [intro to computer programming course](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/110.html) through Northwestern's Computer Science department that is based on Python and assumes you have no prior knowledge of programming. If you can't commit to a quarter-long class, there are a lot of great [workshops](https://www.it.northwestern.edu/research/training.html) put on by Research Computing Services (RCS) at Northwestern. There are also a ton of online resources that you can take at your own pace (many of which are compiled by RCS [here](https://sites.northwestern.edu/researchcomputing/2020/03/31/online-learning-resources-python/)). One of the most polished of these online resources is [DataCamp](). While most of the features of DataCamp require a paid subscription, Northwestern provides limited paid access every quarter, which you can apply for [here](https://www.it.northwestern.edu/research/campus-events/data-camp.html).
 
-**GitHub**: This repository is hosted on [GitHub](https://github.com) and many metagenomics programs and projects are publicly available through GitHub. Although you don't need an account to access repositories, programs, or users, it is easiest to keep up to date on programs and updates with an account. You can also use GitHub to store and manage your own code. When you first sign up with Github, there is a helpful tutorial that walks you through the basics. You can also check out other helpful GitHub [guides](https://guides.github.com).
+**GitHub**: This repository is hosted on [GitHub](https://github.com). Likewise, many metagenomics programs are publicly available through GitHub. Although you don't need an account to access repositories or users, it is easy to keep up to date on programs and ongoing projects with an account. You can also use GitHub to store and manage your own code. When you first sign up with Github, there is a helpful tutorial that walks you through the basics. You can also check out other helpful GitHub [guides](https://guides.github.com).
 
 ---
 ## Quest basics   
 
-Useful commands 
+There are a few concepts and commands that are important to using Quest.
 
-`ssh -X NETID@quest.it.northwestern.edu`
+**Command line**: Using Quest requires at least some basic knowledge of command line to log in, navigate the file system, and submit jobs, which is pretty intimidating if you haven't used it before. Luckily, there are a lot of resources for learning command line basics. RCS has a [helpful compilation](https://sites.northwestern.edu/researchcomputing/2020/03/20/online-learning-resources-command-line/) of basic to advanced command line resources. You will also go over some basic commands during the Quest orientation.
 
-`cd /projects/b1052/Wells_b1042/McKenna/...` - cd sets file path
+**Submitting jobs**: To submit a job, you need to have a bash file (just a text file with a .sh extension) with some information that gets sent to the scheduler, which directs your job to the correct nodes and puts your job into the queue based on priority. You can also submit an interactive job by simply submitting commands directly while logged into Quest, but it can be easy to lose your work and not be able to document or repeat your commands. The Quest knowledge base has a [helpful page](https://kb.northwestern.edu/page.php?id=69247) on submission scripts and the [bash folder](https://github.com/mckfarm/metagenomics/tree/master/bash) of this repo has many sample scripts to look over. There are a few key pieces that are required, as well as some optional lines that I recommend for every job submission:  
 
-`pwd` - prints current working directory
+`#!/bin/bash` - needed for every submission to tell the scheduler that this is a bash job script  
+`#SBATCH --job-name="job_name"` - the job name for your own reference
+`#SBATCH -A b1042`- what allocation this job is in  
+`#SBATCH -p genomicsguest` - the partition you will use; if you are a member of the genomics cluster and are not in Feinberg, you should use genomicsguest  
+`#SBATCH -t 15:00:00` - the time you estimate for the job to run; from my experience, jobs under 4 hours tend to start running right away  
+`#SBATCH -N 1`- the number of nodes the job will run on; this should generally be set to 1 unless you have figured out a way to parallelize your script to run on multiple nodes (which isn't very common)  
+`#SBATCH --ntasks-per-node=24` - the number of processors your job will run on; if you submit multiple jobs at once, it may be helpful to submit your job as even intervals of 24 (4, 8, 12) so they can be scheduled to run on the same node  
+`#SBATCH --mail-user=email@address` - this is entirely optional; you can have emails sent to you at certain stages of your job  
+`#SBATCH --mail-type=BEGIN,END,FAIL` - if you have the line above, you need this line to specify when you want emails; I have all my job emails sent to a particular folder in my email so they don't clog my main inbox  
+`#SBATCH --output=outlog_name` - saves an out log in the folder where your submission script is; I think this is optional but this is really important as some programs save outputs directly into the out log and provide information on how your job ran  
+`#SBATCH --error=outlog_name` - saves an error log in the folder where your submission script is; also optional, but I highly recommend for troubleshooting and because many programs save outputs and run information directly into the error log  
 
-`sacct -X` - see what jobs are running and pending
-
-`module avail` - show all available modules
-
-`module avail KEYWORD` - searches all available modules
-
-`module load MODULE NAME` - loads a module
-
-`sprio -j` - shows your priority for jobs
-
-`sbatch --test-only <job_submission_script>` - shows how long you'll wait before your job starts
-
-`checkproject ALLOCATION` - checks the memory of the allocation
+**Useful commands**: There are a few handy commands that I keep in a digital sticky note on my desktop for quickly accessing and navigating Quest that I've outlined below.
+- `ssh -X NETID@quest.it.northwestern.edu` - This is how you log into Quest, just plug in your own NETID into the command  
+- `sacct -X` - This command shows you all your current job submissions and whether they are pending, running, or failed
+- `sbatch job_script.sh` - I keep a sbatch command handy when I am first submitting or troubleshooting a job so I don't have to keep typing the same command over and over  
+- `sbatch --test-only job_script.sh` - This command gives you an estimate of when your job will actually start, make sure to submit a regular `sbatch job_script.sh` when you actually want to submit your script
+- `cd /current/project/scripts` - I keep a set current directory command handy with the name of the folder where my project scripts are kept so I don't have to type this in every time I submit a job
+- `sprio -j JOBNUMBER` - This tells you what your priority is in the scheduler, the numbers are a bit arbitrary but you'll sort of get an idea of how long your job will be in the queue
+- `checkproject ALLOCATION` - Check the memory of an allocation
+- `module avail` - shows ALL available modules in Quest, you can also search the available modules by adding a keyword like this `module avail python`
 
 ---
 ## Metagenomics pipeline  
@@ -116,7 +122,11 @@ Useful commands
 ---
 ## Other analyses  
 
-Can directly run raw reads through Blast to see if genes of interest are there
+- Functional gene search - Blast
+Blast is a program that compares sequences, whole sequenced genomes, and metagenome assembled genomes to existing sequences in databases. Blast can also be used to compare nucleotides to protein sequences as well as directly comparing protein sequences. Blast aligns your sequence to the reference sequences and provides an alignment score based on the similarity of your sequence to the reference. Blast can be run on individual .fa files from their [web interface](https://blast.ncbi.nlm.nih.gov/Blast.cgi) or you can install Blast databases and perform the alignment on Quest. Luckily, Blast is available on quest through the command `module load blast/2.7.1` and jobs can be submitted like any other program.
+
+- Phage - PHASTER,
+There are also tools available to identify phage sequences in sequenced genomes and metagenome assembled genomes. [PHASTER](phaster.ca) and [Prophage Hunter](https://pro-hunter.bgi.com) are web-based tools. Another tool is [MetaPhinder](https://cge.cbs.dtu.dk/services/MetaPhinder-2.1/), which is specifically designed for metagenome assembled genomes.
 
 
 
