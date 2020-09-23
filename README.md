@@ -48,7 +48,7 @@ You can also access Quest files using an online service called [Globus](https://
 
 There are a few concepts and commands that are important to using Quest.
 
-**Command line**: Using Quest requires at least some basic knowledge of command line to log in, navigate the file system, and submit jobs, which is pretty intimidating if you haven't used it before. Luckily, there are a lot of resources for learning command line basics. RCS has a [helpful compilation](https://sites.northwestern.edu/researchcomputing/2020/03/20/online-learning-resources-command-line/) of basic to advanced command line resources. You will also go over some basic commands during the Quest orientation.
+**Command line**: Using Quest requires at least some basic knowledge of command line to log in, navigate the file system, and submit jobs, which can be intimidating if you haven't used it before. Luckily, there are a lot of resources for learning command line basics. RCS has a [helpful compilation](https://sites.northwestern.edu/researchcomputing/2020/03/20/online-learning-resources-command-line/) of basic to advanced command line resources. You will also go over some basic commands during the Quest orientation.
 
 **Submitting jobs**: To submit a job, you need to have a bash file (just a text file with a .sh extension) with some information that gets sent to the scheduler, which directs your job to the correct nodes and puts your job into the queue based on priority. You can also submit an interactive job by simply submitting commands directly while logged into Quest, but it can be easy to lose your work and not be able to document or repeat your commands. The Quest knowledge base has a [helpful page](https://kb.northwestern.edu/page.php?id=69247) on submission scripts and the [bash folder](https://github.com/mckfarm/metagenomics/tree/master/bash) of this repo has many sample scripts to look over. There are a few key pieces that are required, as well as some optional lines that I recommend for every job submission:  
 
@@ -72,11 +72,38 @@ There are a few concepts and commands that are important to using Quest.
 - `cd /current/project/scripts` - I keep a set current directory command handy with the name of the folder where my project scripts are kept so I don't have to type this in every time I submit a job
 - `sprio -j JOBNUMBER` - This tells you what your priority is in the scheduler, the numbers are a bit arbitrary but you'll sort of get an idea of how long your job will be in the queue
 - `checkproject ALLOCATION` - Check the memory of an allocation
-- `module avail` - shows ALL available modules in Quest, you can also search the available modules by adding a keyword like this `module avail python`
+
+**Modules**: The folks at Quest have preinstalled popular programs on Quest so we don't have to download, configure, and update them ourselves. These are loaded in through the `module load` command, which you will see scattered throughout this pipeline and in the batch submission scripts. To see all of the available modules in Quest (there are a lot), you can enter `module avail` in a Quest window. You can also search the available modules by adding a keyword: for example, `module avail python`. 
+
 
 ---
 ## Metagenomics pipeline  
 
+**Introduction**
+The metagenomics pipeline is a series of steps that takes raw sequence data and compiles it into genome bins. This is done with three key intermediate steps, assembly into contigs, contig assembly to scaffolds, mapping reads, and binning genomes. These steps are summarized briefly in this section of the tutorial and are described in much better detail from a variety of sources including published literature, lectures and talks, and program manuals. Some additional resources are linked at the end of this subsection.
+
+![Assembling reads](assembly.png)
+
+Assembling contigs - Contigs are composed of overlapping reads. Contigs are assembled by comparing the sequence of each read and determining where they overlap. If the reads were obtained through paired end sequencing (both the foward and reverse strands were sequenced), then the assembly program can also assemble contigs to account for both strands. 
+
+Assembling scaffolds - Contigs are used to create scaffolds, which are sequences separated by gaps of known length. Contigs have unique short sequences that indicate their relative position in a whole genome sequence. These unique sequences, referred to as mate-pairs, can be used to string the contigs together into longer sequences with gaps where the contigs did not overlap. 
+
+Mapping reads - Once the scaffolds have been assembled, they can be used as a reference (index) for mapping the raw reads. In other words, the raw reads are aligned to the scaffolds to fill in the gaps. The output of read mapping is an alignment file, typically a BAM or SAM, which shows how the reads map to the scaffolds. The alignment file can be used to calculate the depth and coverage, which are important for genome binning and further quality calculations.
+
+Binning genomes - Genome bins (also known as draft genomes and metagenome-assembled genomes) are assembled from the mapping output and the contigs. Every program is slightly different in their specific approach, but generally, they rely on algorithms to group contigs into bins.
+
+Additional resources:
+[Bioinformatics workbook](https://bioinformaticsworkbook.org/#gsc.tab=0) is a great resource for a variety of bioinformatics tutorials and information. Their metagenomics guide is similar to this document, but goes much more in depth about what the outputs of each program mean (https://bioinformaticsworkbook.org/dataAnalysis/Metagenomics/MetagenomicsP1.html#gsc.tab=0).
+
+Wikipedia, the Walmart of scientific literature 
+- Here is the wikipedia page for shotgun sequencing as a whole, which is helpful for understanding how shotgun sequencing works and the general approach for obtaining genome bins https://en.wikipedia.org/wiki/Shotgun_sequencing
+- Here is the wikipedia page for contigs, another useful page for getting a general understanding of what's going on https://en.wikipedia.org/wiki/Contig
+
+Videos, if you find audio-visual presentations more helpful
+- Great summary video of how metagenome assembly works from a 2018 workshop, presentation by Dr. Laura Hug https://www.youtube.com/watch?v=BC9sxqAEs2s
+- Introductory explanation of k-mers which is important for the contig assembly, presentation by Dr. Rob Edwards https://www.youtube.com/watch?v=DyZvATM9Hr8
+
+**Pipeline**
 1) Check quality of raw metagenome sequence data using [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - Available as a Quest module, load it in using `module load fastqc/0.11.5`
 
@@ -86,6 +113,7 @@ There are a few concepts and commands that are important to using Quest.
 3)  Assemble metagenome DNA raw reads to contigs using [**IDBA**](https://github.com/loneknightpy/idba), [**metaSPAdes**](https://github.com/ablab/spades) (part of the SPAdes package), or [**megahit**](https://github.com/voutcn/megahit)
 - IDBA is available as a Quest module, load it in using `module load idba/2016_12`
 - metaSPAdes is installed in the group Quest node and requires far more memory
+- **add coassembly info and update script**
 
 4) Evaluate assembly results with [**quast**](http://quast.sourceforge.net/)
 - QUAST is installed locally in the group node
@@ -113,11 +141,9 @@ There are a few concepts and commands that are important to using Quest.
 &nbsp;&nbsp;`module load perl`
 
 9) Annotate the phylogeny of the draft genome bins using [**GTDBTk**](https://github.com/Ecogenomics/GTDBTk) with prokka annotation
-- There are some issues with newer versions of GTDBTk, specifically on high performance computers like Quest, where the classify step runs out of memory due to issues with the dependency pplacer. I'm still troubleshooting some of the suggestions from the devs using the `--scratch_dir` tag in the code (https://github.com/Ecogenomics/GTDBTk/issues/238).
+- There is a documented issue with newer versions of GTDBTk on high performance computers like Quest, where the classify step runs out of memory due to issues with the dependency pplacer. This issue can be circumvented using the `--scratch_dir` tag in the command line code (https://github.com/Ecogenomics/GTDBTk/issues/238), which creates a temporary scratch file in your current directory rather than relying on the working memory that you specify in your SBATCH lines. Make sure there is enough room on whatever allocation you are using to support this temporary scratch file (~120 GB). 
 
-10) Optional analyses (FastANI, sequence alignment, phylogentic tree, prodigal ORF annotation, Blast sequence annotation, remove ribosome RNA sequences)
-- FastTree is available on Quest, though I haven't used it yet. Load it in using `module load fasttree/2.1.10`
-- Blast is available on Quest, though I haven't used it yet. Load it in using `module load blast/2.7.1`
+10) Optional analyses (FastANI, sequence alignment, phylogentic tree, prodigal ORF annotation, Blast sequence annotation, remove ribosome RNA sequences) - see next section
 
 ---
 ## Other analyses  
@@ -125,7 +151,7 @@ There are a few concepts and commands that are important to using Quest.
 - Functional gene search - Blast
 Blast is a program that compares sequences, whole sequenced genomes, and metagenome assembled genomes to existing sequences in databases. Blast can also be used to compare nucleotides to protein sequences as well as directly comparing protein sequences. Blast aligns your sequence to the reference sequences and provides an alignment score based on the similarity of your sequence to the reference. Blast can be run on individual .fa files from their [web interface](https://blast.ncbi.nlm.nih.gov/Blast.cgi) or you can install Blast databases and perform the alignment on Quest. Luckily, Blast is available on quest through the command `module load blast/2.7.1` and jobs can be submitted like any other program.
 
-- Phage - PHASTER,
+- Phage - PHASTER, Prophage Hunter, MetaPhinder
 There are also tools available to identify phage sequences in sequenced genomes and metagenome assembled genomes. [PHASTER](phaster.ca) and [Prophage Hunter](https://pro-hunter.bgi.com) are web-based tools. Another tool is [MetaPhinder](https://cge.cbs.dtu.dk/services/MetaPhinder-2.1/), which is specifically designed for metagenome assembled genomes.
 
 
