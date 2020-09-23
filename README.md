@@ -73,29 +73,31 @@ There are a few concepts and commands that are important to using Quest.
 - `sprio -j JOBNUMBER` - This tells you what your priority is in the scheduler, the numbers are a bit arbitrary but you'll sort of get an idea of how long your job will be in the queue
 - `checkproject ALLOCATION` - Check the memory of an allocation
 
-**Modules**: The folks at Quest have preinstalled popular programs on Quest so we don't have to download, configure, and update them ourselves. These are loaded in through the `module load` command, which you will see scattered throughout this pipeline and in the batch submission scripts. To see all of the available modules in Quest (there are a lot), you can enter `module avail` in a Quest window. You can also search the available modules by adding a keyword: for example, `module avail python`. 
+**Modules**: The folks at Quest have preinstalled popular programs on Quest so we don't have to download, configure, and update them ourselves. These are loaded in through the `module load` command, which you will see scattered throughout this pipeline and in the batch submission scripts. To see all of the available modules in Quest (there are a lot), you can enter `module avail` in a Quest window. You can also search the available modules by adding a keyword: for example, `module avail python`.
 
 
 ---
 ## Metagenomics pipeline  
 
-**Introduction**
+**Introduction**  
+
 The metagenomics pipeline is a series of steps that takes raw sequence data and compiles it into genome bins. This is done with three key intermediate steps, assembly into contigs, contig assembly to scaffolds, mapping reads, and binning genomes. These steps are summarized briefly in this section of the tutorial and are described in much better detail from a variety of sources including published literature, lectures and talks, and program manuals. Some additional resources are linked at the end of this subsection.
 
 ![Assembling reads](assembly.png)
 
-Assembling contigs - Contigs are composed of overlapping reads. Contigs are assembled by comparing the sequence of each read and determining where they overlap. If the reads were obtained through paired end sequencing (both the foward and reverse strands were sequenced), then the assembly program can also assemble contigs to account for both strands. 
+Assembling contigs - Contigs are composed of overlapping reads. Contigs are assembled by comparing the sequence of each read and determining where they overlap. If the reads were obtained through paired end sequencing (both the foward and reverse strands were sequenced), then the assembly program can also assemble contigs to account for both strands.
 
-Assembling scaffolds - Contigs are used to create scaffolds, which are sequences separated by gaps of known length. Contigs have unique short sequences that indicate their relative position in a whole genome sequence. These unique sequences, referred to as mate-pairs, can be used to string the contigs together into longer sequences with gaps where the contigs did not overlap. 
+Assembling scaffolds - Contigs are used to create scaffolds, which are sequences separated by gaps of known length. Contigs have unique short sequences that indicate their relative position in a whole genome sequence. These unique sequences, referred to as mate-pairs, can be used to string the contigs together into longer sequences with gaps where the contigs did not overlap.
 
 Mapping reads - Once the scaffolds have been assembled, they can be used as a reference (index) for mapping the raw reads. In other words, the raw reads are aligned to the scaffolds to fill in the gaps. The output of read mapping is an alignment file, typically a BAM or SAM, which shows how the reads map to the scaffolds. The alignment file can be used to calculate the depth and coverage, which are important for genome binning and further quality calculations.
 
 Binning genomes - Genome bins (also known as draft genomes and metagenome-assembled genomes) are assembled from the mapping output and the contigs. Every program is slightly different in their specific approach, but generally, they rely on algorithms to group contigs into bins.
 
-Additional resources:
+Additional resources:  
+
 [Bioinformatics workbook](https://bioinformaticsworkbook.org/#gsc.tab=0) is a great resource for a variety of bioinformatics tutorials and information. Their metagenomics guide is similar to this document, but goes much more in depth about what the outputs of each program mean (https://bioinformaticsworkbook.org/dataAnalysis/Metagenomics/MetagenomicsP1.html#gsc.tab=0).
 
-Wikipedia, the Walmart of scientific literature 
+Wikipedia, the Walmart of scientific literature
 - Here is the wikipedia page for shotgun sequencing as a whole, which is helpful for understanding how shotgun sequencing works and the general approach for obtaining genome bins https://en.wikipedia.org/wiki/Shotgun_sequencing
 - Here is the wikipedia page for contigs, another useful page for getting a general understanding of what's going on https://en.wikipedia.org/wiki/Contig
 
@@ -141,7 +143,7 @@ Videos, if you find audio-visual presentations more helpful
 &nbsp;&nbsp;`module load perl`
 
 9) Annotate the phylogeny of the draft genome bins using [**GTDBTk**](https://github.com/Ecogenomics/GTDBTk) with prokka annotation
-- There is a documented issue with newer versions of GTDBTk on high performance computers like Quest, where the classify step runs out of memory due to issues with the dependency pplacer. This issue can be circumvented using the `--scratch_dir` tag in the command line code (https://github.com/Ecogenomics/GTDBTk/issues/238), which creates a temporary scratch file in your current directory rather than relying on the working memory that you specify in your SBATCH lines. Make sure there is enough room on whatever allocation you are using to support this temporary scratch file (~120 GB). 
+- There is a documented issue with newer versions of GTDBTk on high performance computers like Quest, where the classify step runs out of memory due to issues with the dependency pplacer. This issue can be circumvented using the `--scratch_dir` tag in the command line code (https://github.com/Ecogenomics/GTDBTk/issues/238), which creates a temporary scratch file in your current directory rather than relying on the working memory that you specify in your SBATCH lines. Make sure there is enough room on whatever allocation you are using to support this temporary scratch file (~120 GB).
 
 10) Optional analyses (FastANI, sequence alignment, phylogentic tree, prodigal ORF annotation, Blast sequence annotation, remove ribosome RNA sequences) - see next section
 
