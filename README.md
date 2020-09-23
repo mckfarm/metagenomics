@@ -84,6 +84,7 @@ There are a few concepts and commands that are important to using Quest.
 The metagenomics pipeline is a series of steps that takes raw sequence data and compiles it into genome bins. This is done with three key intermediate steps, assembly into contigs, contig assembly to scaffolds, mapping reads, and binning genomes. These steps are summarized briefly in this section of the tutorial and are described in much better detail from a variety of sources including published literature, lectures and talks, and program manuals. Some additional resources are linked at the end of this subsection.
 
 ![Assembling reads](assembly.png)
+(From http://marinetics.org/teaching/hts/Assembly.html)
 
 Assembling contigs - Contigs are composed of overlapping reads. Contigs are assembled by comparing the sequence of each read and determining where they overlap. If the reads were obtained through paired end sequencing (both the foward and reverse strands were sequenced), then the assembly program can also assemble contigs to account for both strands.
 
