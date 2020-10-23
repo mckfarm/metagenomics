@@ -39,7 +39,7 @@ You can also access Quest files using an online service called [Globus](https://
 
 **Text editing**: To write and edit scripts and job submissions, you will need to use some kind of text editor. You can use a basic text editing software like Text Edit on Mac or Notepad on Windows for this purpose. However, there are a lot of text editing programs that are specifically designed for writing code and provide helpful features like color coding, recalling variable names, GitHub integration, and recognizing programming languages. I use [Atom](https://atom.io), but there are many options available. If you use other programming languages with IDEs like RStudio or Jupyter Lab, you may also be able to write job submission scripts in these programs as well (just make sure to save your scripts as bash .sh files).
 
-**Programming**: Although this guide is primarily focused on writing bash scripts for Quest job submissions, you may eventually need to write codes in another programming language, most likely Python. The easiest way to get started with Python is downloading [Anaconda](https://www.anaconda.com/products/individual), a package manager that includes Python and the popular Jupyter Notebook and Jupyter Lab programs. If you don't have programming experience in any language, attending a class or workshop can be the best way to get started. There is an [intro to computer programming course](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/110.html) through Northwestern's Computer Science department that is based on Python and assumes you have no prior knowledge of programming. If you can't commit to a quarter-long class, there are a lot of great [workshops](https://www.it.northwestern.edu/research/training.html) put on by Research Computing Services (RCS) at Northwestern. There are also a ton of online resources that you can take at your own pace (many of which are compiled by RCS [here](https://sites.northwestern.edu/researchcomputing/2020/03/31/online-learning-resources-python/)). One of the most polished of these online resources is [DataCamp](). While most of the features of DataCamp require a paid subscription, Northwestern provides limited paid access every quarter, which you can apply for [here](https://www.it.northwestern.edu/research/campus-events/data-camp.html).
+**Programming**: Although this guide is primarily focused on writing bash scripts for Quest job submissions, you may eventually need to write codes in another programming language to perform repetitive tasks or analyze outputs. The easiest way to get started with Python is downloading [Anaconda](https://www.anaconda.com/products/individual), a package manager that includes Python and the popular Jupyter Notebook and Jupyter Lab programs. If you don't have programming experience in any language, attending a class or workshop can be the best way to get started. There is an [intro to computer programming course](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/110.html) through Northwestern's Computer Science department that is based on Python and assumes you have no prior knowledge of programming. If you can't commit to a quarter-long class, there are a lot of great [workshops](https://www.it.northwestern.edu/research/training.html) put on by Research Computing Services (RCS) at Northwestern. There are also a ton of online resources that you can take at your own pace (many of which are compiled by RCS [here](https://sites.northwestern.edu/researchcomputing/2020/03/31/online-learning-resources-python/)). One of the most polished of these online resources is [DataCamp](). While most of the features of DataCamp require a paid subscription, Northwestern provides limited paid access every quarter, which you can apply for [here](https://www.it.northwestern.edu/research/campus-events/data-camp.html). I have some Python codes that I use to create input files and parse outputs, which you can find [here](https://github.com/mckfarm/my_lib/blob/master/Python/bioinformatics.py).
 
 **GitHub**: This repository is hosted on [GitHub](https://github.com). Likewise, many metagenomics programs are publicly available through GitHub. Although you don't need an account to access repositories or users, it is easy to keep up to date on programs and ongoing projects with an account. You can also use GitHub to store and manage your own code. When you first sign up with Github, there is a helpful tutorial that walks you through the basics. You can also check out other helpful GitHub [guides](https://guides.github.com).
 
@@ -83,7 +83,7 @@ There are a few concepts and commands that are important to using Quest.
 
 The metagenomics pipeline is a series of steps that takes raw sequence data and compiles it into genome bins. This is done with three key intermediate steps, assembly into contigs, contig assembly to scaffolds, mapping reads, and binning genomes. These steps are summarized briefly in this section of the tutorial and are described in much better detail from a variety of sources including published literature, lectures and talks, and program manuals. Some additional resources are linked at the end of this subsection.
 
-![Assembling reads](assembly.png)
+![Assembling reads](assembly.png)  
 (From http://marinetics.org/teaching/hts/Assembly.html)
 
 Assembling contigs - Contigs are composed of overlapping reads. Contigs are assembled by comparing the sequence of each read and determining where they overlap. If the reads were obtained through paired end sequencing (both the foward and reverse strands were sequenced), then the assembly program can also assemble contigs to account for both strands.
@@ -98,7 +98,11 @@ Additional resources:
 
 [Bioinformatics workbook](https://bioinformaticsworkbook.org/#gsc.tab=0) is a great resource for a variety of bioinformatics tutorials and information. Their metagenomics guide is similar to this document, but goes much more in depth about what the outputs of each program mean (https://bioinformaticsworkbook.org/dataAnalysis/Metagenomics/MetagenomicsP1.html#gsc.tab=0).
 
-Wikipedia, the Walmart of scientific literature
+[Microbiome tools](https://github.com/microsud/Tools-Microbiome-Analysis) is a collection of tools specifically designed to work in R. I'm not as familiar with bioinformatics in R, but the list of tools is pretty extensive.
+
+[Metagenomics wiki](https://sites.google.com/site/wiki4metagenomics/) is very simple to navigate and has simple tutorials/explanations for many of the tools recommended in this pipeline.
+
+Wikipedia
 - Here is the wikipedia page for shotgun sequencing as a whole, which is helpful for understanding how shotgun sequencing works and the general approach for obtaining genome bins https://en.wikipedia.org/wiki/Shotgun_sequencing
 - Here is the wikipedia page for contigs, another useful page for getting a general understanding of what's going on https://en.wikipedia.org/wiki/Contig
 
@@ -112,15 +116,16 @@ Videos, if you find audio-visual presentations more helpful
 
 2) Trim sequences to a certain length using [**fastx toolkit**](http://hannonlab.cshl.edu/fastx_toolkit/), convert from fq to fa if needed  
 - Available as a Quest module, load it in using `module load fastx_toolkit/0.0.14`
+- There are definitely other programs available to do this step, but this is integrated nicely into Quest
 
 3)  Assemble metagenome DNA raw reads to contigs using [**IDBA**](https://github.com/loneknightpy/idba), [**metaSPAdes**](https://github.com/ablab/spades) (part of the SPAdes package), or [**megahit**](https://github.com/voutcn/megahit)
 - IDBA is available as a Quest module, load it in using `module load idba/2016_12`
-- metaSPAdes is installed in the group Quest node and requires far more memory
-- **add coassembly info and update script**
+- metaSPAdes is installed in the group Quest node and requires far more memory, so much so that it may exceed Quest job limits. I've only used IDBA, but you may need to contact Quest support and request access to a larger memory node if you choose to use metaSPAdes
+- Samples from the same reactor taken from multiple dates can be coassembled or assembled individually. [Coassembly](https://astrobiomike.github.io/metagenomics/metagen_anvio#what-is-a-co-assembly) essentially means using all available sequencing data to produce one reference assembly. This approach can improve the robustness of the assembly, but it may not be appropriate if the microbial communities are very different from one sampling date to another. There are no hard and fast rules to decide when to coassemble, so it may be best to coassemble and individually assemble, then compare results and make a subjective decision after the binning step. I've included scripts for coassembly and individual assembly in the scripts folder.
 
 4) Evaluate assembly results with [**quast**](http://quast.sourceforge.net/)
 - QUAST is installed locally in the group node
-- Make sure to load in these dependencies  
+- Make sure to load in these dependencies in your script
 &nbsp;&nbsp;`module load python/anaconda3.6`  
 &nbsp;&nbsp;`module load boost/1.56.0`    
 
@@ -138,7 +143,7 @@ Videos, if you find audio-visual presentations more helpful
 - Available as a Quest module, load in using `module load checkm/1.0.7`
 
 8) Annotate the genome for potential functional roles using [**prokka**](https://github.com/tseemann/prokka) or [**kegg**](https://www.genome.jp/kegg/)
-- So far I've used prokka, which is installed in the group Quest node. I think I've updated it properly, but some versions may have issues with the current perl version or the tbl2asn package within prokka. Couldn't figure out the perl version issue, but it would be good to check back in with the repo to see if it gets fixed in the next update. The tbl2asn issue can be fixed by installing [tbl2asn-forever](https://anaconda.org/bioconda/tbl2asn-forever) through conda.
+- So far I've used prokka, which is installed in the group Quest node. I had some issues previously with the current perl version and tbl2asn package within prokka. I think the issue is resolved now, but you may need to install a fresh version of prokka if you run into issues.
 - Load in these dependencies from Quest  
 &nbsp;&nbsp;`module load python/anaconda3.6`  
 &nbsp;&nbsp;`module load perl`
@@ -151,10 +156,10 @@ Videos, if you find audio-visual presentations more helpful
 ---
 ## Other analyses  
 
-- Functional gene search - Blast
+- Blast  
 Blast is a program that compares sequences, whole sequenced genomes, and metagenome assembled genomes to existing sequences in databases. Blast can also be used to compare nucleotides to protein sequences as well as directly comparing protein sequences. Blast aligns your sequence to the reference sequences and provides an alignment score based on the similarity of your sequence to the reference. Blast can be run on individual .fa files from their [web interface](https://blast.ncbi.nlm.nih.gov/Blast.cgi) or you can install Blast databases and perform the alignment on Quest. Luckily, Blast is available on quest through the command `module load blast/2.7.1` and jobs can be submitted like any other program.
 
-- Phage - PHASTER, Prophage Hunter, MetaPhinder
+- Phage - PHASTER, Prophage Hunter, MetaPhinder  
 There are also tools available to identify phage sequences in sequenced genomes and metagenome assembled genomes. [PHASTER](phaster.ca) and [Prophage Hunter](https://pro-hunter.bgi.com) are web-based tools. Another tool is [MetaPhinder](https://cge.cbs.dtu.dk/services/MetaPhinder-2.1/), which is specifically designed for metagenome assembled genomes.
 
 
