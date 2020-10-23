@@ -14,7 +14,7 @@
 module purge all
 module load checkm/1.0.7
 
-cd /projects/b1052/Wells_b1042/McKenna/training/SG_Metagenome/
+cd /projects/b1052/Wells_b1042/McKenna/SG_Metagenome/
 
 #you need the bin_dir folder as input, the output directory is "checkM_results"
 checkm lineage_wf -t 10 -x fa ./bins_dir ./checkM_results
