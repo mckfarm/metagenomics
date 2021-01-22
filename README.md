@@ -160,9 +160,10 @@ Videos, if you find audio-visual presentations more helpful
 Blast is a program that compares sequences, whole sequenced genomes, and metagenome assembled genomes to existing sequences in databases. Blast can also be used to compare nucleotides to protein sequences as well as directly comparing protein sequences. Blast aligns your sequence to the reference sequences and provides an alignment score based on the similarity of your sequence to the reference. Blast can be run on individual .fa files from their [web interface](https://blast.ncbi.nlm.nih.gov/Blast.cgi) or you can install Blast databases and perform the alignment on Quest. Luckily, Blast is available on quest through the command `module load blast/2.7.1` and jobs can be submitted like any other program.
 
 - Phage - PHASTER, Prophage Hunter, MetaPhinder  
-There are also tools available to identify phage sequences in sequenced genomes and metagenome assembled genomes. [PHASTER](phaster.ca) and [Prophage Hunter](https://pro-hunter.bgi.com) are web-based tools. Another tool is [MetaPhinder](https://cge.cbs.dtu.dk/services/MetaPhinder-2.1/), which is specifically designed for metagenome assembled genomes.
+There are also tools available to identify phage sequences in sequenced genomes and metagenome assembled genomes. [PHASTER](phaster.ca) and [Prophage Hunter](https://pro-hunter.bgi.com) are web-based tools. Another tool is [MetaPhinder](https://cge.cbs.dtu.dk/services/MetaPhinder-2.1/), which is specifically designed for MAGs.
 
-
+- MetaPOAP
+MetaPOAP is a Python script that estimates the likelihood that a metabolic pathway is present in your MAG. A full explanation of the program is available [here](https://academic.oup.com/bioinformatics/article/34/24/4284/5043007) and the program Github page is [here](https://github.com/lmward/MetaPOAP). MetaPOAP requires a metabolic pathway to be represented by robust marker genes, which can be identified in a MAG using Blast. The program uses these metabolic pathway matches as well as MAG quality data from CheckM to estimate the false positive and false negative rate of detecting the metabolic pathway of interest in a MAG. This program is very lightweight and can be run on your own computer using python. You must use Python2 (latest version = Python2.7) for this program to work. 
 
 ---
 ## Resources  
