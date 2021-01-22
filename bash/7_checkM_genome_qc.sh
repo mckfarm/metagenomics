@@ -8,8 +8,8 @@
 #SBATCH --mem-per-cpu=7G
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=checkM_outlog
-#SBATCH --error=checkM_errorlog
+#SBATCH --output=checkM_outlog.txt
+#SBATCH --error=checkM_errorlog.txt
 
 module purge all
 module load checkm/1.0.7

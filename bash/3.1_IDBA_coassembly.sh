@@ -8,8 +8,8 @@
 #SBATCH --mem-per-cpu=10G
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_IDBA
-#SBATCH --error=errorlog_IDBA
+#SBATCH --output=outlog_IDBA.txt
+#SBATCH --error=errorlog_IDBA.txt
 
 module purge all
 module load idba/2016_12

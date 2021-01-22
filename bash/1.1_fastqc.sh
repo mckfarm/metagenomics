@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_fastqc
-#SBATCH --error=errorlog_fastqc
+#SBATCH --output=outlog_fastqc.txt
+#SBATCH --error=errorlog_fastqc.txt
 
 module purge all
 module load fastqc

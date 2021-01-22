@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_bowtie1
-#SBATCH --error=errorlog_bowtie1
+#SBATCH --output=outlog_bowtie1.txt
+#SBATCH --error=errorlog_bowtie1.txt
 
 BASENAME="SG_05_27_2016"
 

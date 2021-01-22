@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=5
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_QUAST
-#SBATCH --error=errorlog_QUAST
+#SBATCH --output=outlog_QUAST.txt
+#SBATCH --error=errorlog_QUAST.txt
 
 module purge all
 module load python

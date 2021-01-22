@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_blast
-#SBATCH --error=errorlog_blast
+#SBATCH --output=outlog_blast.txt
+#SBATCH --error=errorlog_blast.txt
 
 module load blast/2.7.1
 

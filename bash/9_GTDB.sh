@@ -8,8 +8,8 @@
 #SBATCH --mem-per-cpu=11G
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_gtdb
-#SBATCH --error=errorlog_gtdb
+#SBATCH --output=outlog_gtdb.txt
+#SBATCH --error=errorlog_gtdb.txt
 
 
 module load python/anaconda3.6

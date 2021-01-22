@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=24
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_IDBA2
-#SBATCH --error=errorlog_IDBA2
+#SBATCH --output=outlog_IDBA2.txt
+#SBATCH --error=errorlog_IDBA2.txt
 
 # export PATH=$PATH:/home/mmf8608/software/idba/bin
 module purge all

@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_convert_fq_to_fa
-#SBATCH --error=errorlog_convert_fq_to_fa
+#SBATCH --output=outlog_convert_fq_to_fa.txt
+#SBATCH --error=errorlog_convert_fq_to_fa.txt
 
 # can load the fastx module
 module purge all

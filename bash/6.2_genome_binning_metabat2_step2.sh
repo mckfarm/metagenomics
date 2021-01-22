@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_metabat_step2
-#SBATCH --error=errorlog_metabat_step2
+#SBATCH --output=outlog_metabat_step2.txt
+#SBATCH --error=errorlog_metabat_step2.txt
 
 module purge all
 export PATH=$PATH:/projects/b1052/berkeleylab-metabat-cc5ccff537e8/metabat

@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mckennafarmer2023@u.northwestern.edu
-#SBATCH --output=outlog_fastx_trimmer
-#SBATCH --error=errorlog_fastx_trimmer
+#SBATCH --output=outlog_fastx_trimmer.txt
+#SBATCH --error=errorlog_fastx_trimmer.txt
 
 # can load the fastx module
 module purge all
