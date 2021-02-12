@@ -142,8 +142,8 @@ Videos, if you find audio-visual presentations more helpful
 7) Check draft genome bin quality using [**CheckM**](https://ecogenomics.github.io/CheckM/)
 - Available as a Quest module, load in using `module load checkm/1.0.7`
 
-8) Annotate the genome for potential functional roles using [**prokka**](https://github.com/tseemann/prokka) or [**kegg**](https://www.genome.jp/kegg/)
-- So far I've used prokka, which is installed in the group Quest node. I had some issues previously with the current perl version and tbl2asn package within prokka. I think the issue is resolved now, but you may need to install a fresh version of prokka if you run into issues.
+8) Annotate the genome for potential functional roles using [**prokka**](https://github.com/tseemann/prokka)
+- Prokka is installed in the group Quest node. I had some issues previously with the current perl version and tbl2asn package within prokka. I think the issue is resolved now, but you may need to install a fresh version of prokka if you run into issues.
 - Load in these dependencies from Quest  
 &nbsp;&nbsp;`module load python/anaconda3.6`  
 &nbsp;&nbsp;`module load perl`
