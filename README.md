@@ -8,6 +8,7 @@ This document contains the following sections:
 [Quest basics](#quest-basics) - Submitting a job, basic commands, and other programming tools  
 [Metagenomics pipeline](#metagenomics-pipeline) - Steps and programs needed to turn raw data into assembled genomes  
 [Other analyses](#other-analyses) - More things to do besides assembling genomes  
+[Helpful tips for navigating Quest](#helpful-quest-tips) - More advanced tips for navigating and using Quest
 [Resources](#resources) - Resources for learning more about metagenomics and programming  
 
 ---
@@ -29,13 +30,7 @@ You should plan on attending an introduction to Quest workshop and reviewing the
 ### Other programs  
 Once you submit the join allocation request, you should also download a few programs to help you along the way. The most important programs are related to file management, text editing, and programming.
 
-**File management**: Rather than navigating files on Quest allocations through command line, you can access them using a normal GUI-based file system. [Cyberduck](https://cyberduck.io) is a free program that connects directly to Quest allocation storage. You can move files directly between your computer to Quest using Cyberduck.
-
-![Cyberduck bookmarks](cyberduck1.png)
-
-![Cyberduck screenshot](cyberduck2.png)  
-
-You can also access Quest files using an online service called [Globus](https://kb.northwestern.edu/page.php?id=71271). I personally prefer using Cyberduck because it navigates exactly like my computer file explorer, but you may prefer Globus over Cyberduck. Either way, make sure to get familiar with a file management system to more easily files between your computer and Quest.
+**File management**: Rather than navigating files on Quest allocations through command line, you can access them using a normal GUI-based file system. [Cyberduck](https://cyberduck.io) is a free program that connects directly to Quest allocation storage. You can move files directly between your computer to Quest using Cyberduck. You can also access Quest files using an online service called [Globus](https://kb.northwestern.edu/page.php?id=71271). I personally prefer using Cyberduck because it navigates exactly like my computer file explorer, but you may prefer Globus over Cyberduck. You can also access files on Box through Quest, which is detailed later in this tutorial.
 
 **Text editing**: To write and edit scripts and job submissions, you will need to use some kind of text editor. You can use a basic text editing software like Text Edit on Mac or Notepad on Windows for this purpose. You can also use the nano command in Quest to edit text-based files directly. However, there are a lot of text editing programs that are specifically designed for writing code and provide helpful features like color coding, recalling variable names, GitHub integration, and recognizing programming languages. I use [Atom](https://atom.io), but there are many options available. If you use other programming languages with IDEs like RStudio or Jupyter Lab, you may also be able to write job submission scripts in these programs as well.
 
@@ -45,12 +40,15 @@ You can also access Quest files using an online service called [Globus](https://
 
 ---
 ## Quest basics   
-
 There are a few concepts and commands that are important to using Quest.
 
 **Command line**: Using Quest requires at least some basic knowledge of command line to log in, navigate the file system, and submit jobs, which can be intimidating if you haven't used it before. Luckily, there are a lot of resources for learning command line basics. RCS has a [helpful compilation](https://sites.northwestern.edu/researchcomputing/2020/03/20/online-learning-resources-command-line/) of basic to advanced command line resources. You will also go over some basic commands during the Quest orientation.
 
-**Submitting jobs**: To submit a job, you need to have a bash file (just a text file with a .sh extension) with some information that gets sent to the scheduler, which directs your job to the correct nodes and puts your job into the queue based on priority. You can also submit an interactive job by simply submitting commands directly while logged into Quest, but it can be easy to lose your work and not be able to document or repeat your commands. The Quest knowledge base has a [helpful page](https://kb.northwestern.edu/page.php?id=69247) on submission scripts and the [bash folder](https://github.com/mckfarm/metagenomics/tree/master/bash) of this repo has many sample scripts to look over. There are a few key pieces that are required, as well as some optional lines that I recommend for every job submission:  
+**Interactive job**: Many simple tasks can be performed in a Quest interactive job. This allows you to reserve a specific amount of computing power and time to use while you're logged into a Quest terminal. You can execute commands and run programs within the basic Quest terminal. However, interactive jobs do not allow you to submit a script and let it run in the background while you work on something else. To start an interactive job, log into Quest and enter a submission command like this:  
+`srun --account=p31378 --time=03:00:00 --partition=short --mem=4G --pty bash -l`  
+More details about submitting interactive jobs are available [here](https://kb.northwestern.edu/page.php?id=69247). 
+
+**Submitting batch jobs**: To submit a batch job, you need to have a bash file (just a text file with a .sh extension) with some information that gets sent to the scheduler, which directs your job to the correct nodes and puts your job into the queue based on priority. You can also submit an interactive job by simply submitting commands directly while logged into Quest, but it can be easy to lose your work and not be able to document or repeat your commands. The Quest knowledge base has a [helpful page](https://kb.northwestern.edu/page.php?id=69247) on submission scripts and the [bash folder](https://github.com/mckfarm/metagenomics/tree/master/bash) of this repo has many sample scripts to look over. There are a few key pieces that are required, as well as some optional lines that I recommend for every job submission:  
 
 `#!/bin/bash` - needed for every submission to tell the scheduler that this is a bash job script  
 `#SBATCH --job-name="job_name"` - the job name for your own reference
@@ -156,12 +154,53 @@ Videos, if you find audio-visual presentations more helpful
 
 ---
 ## Other analyses  
-
 - Blast  
 Blast is a program that compares sequences, whole sequenced genomes, and metagenome assembled genomes to existing sequences in databases. Blast can also be used to compare nucleotides to protein sequences as well as directly comparing protein sequences. Blast aligns your sequence to the reference sequences and provides an alignment score based on the similarity of your sequence to the reference. Blast can be run on individual .fa files from their [web interface](https://blast.ncbi.nlm.nih.gov/Blast.cgi) or you can install Blast databases and perform the alignment on Quest. Luckily, Blast is available on quest through the command `module load blast/2.7.1` and jobs can be submitted like any other program.
 
 - MetaPOAP
 MetaPOAP is a Python script that estimates the likelihood that a metabolic pathway is present in your MAG. A full explanation of the program is available [here](https://academic.oup.com/bioinformatics/article/34/24/4284/5043007) and the program Github page is [here](https://github.com/lmward/MetaPOAP). MetaPOAP requires a metabolic pathway to be represented by robust marker genes, which can be identified in a MAG using Blast. The program uses these metabolic pathway matches as well as MAG quality data from CheckM to estimate the false positive and false negative rate of detecting the metabolic pathway of interest in a MAG. This program is very lightweight and can be run on your own computer using python. You must use Python2 (latest version = Python2.7) for this program to work.
+
+## Helpful Quest tips  
+In addition to the commands listed in the [Quest basics](#quest-basics) section, there are a few more advanced commands that I use to make my life a bit easier.  
+
+**Dealing with tarballs/gzip files:** 
+tar -xvzf name.tar.gz 
+-x extract
+-v verbose (show whats going on)
+-z if its a gzip (gz ending), remove if you don't have tar.gz ending
+-f specify filename
+
+tar -tvf name.tar 
+- t only show file names, don't extract
+- v verbose
+- f specify filename
+
+tar -xvf name.tar filename.txt
+- specify file name to extract from tar based on a text file
+
+tar -czvf newfolder.tar.gz
+- c create tar.gzip archive
+- z gzip
+- v verbose
+- f specify filename
+
+**Transferring files to and from Box**
+To move files between Quest and Box, you must be in log in node and not in an interactive job. See the [Quest KB page about file transfers](https://kb.northwestern.edu/page.php?id=70521) for more detailed info and other file transfer methods.
+- Set up an external password with Quest, which you have to use to use to use the File Transfer Protocol (FTPS)
+- Log into quest
+- Enter this into the command line, but with your own email `lftp -p 990 -u mckennafarmer2023@u.northwestern.edu ftps://ftp.box.com`
+- Enter your password when prompted
+- Use the command `cd` to set the working directory in Box
+- Use the command `lcd` to set the working directory in Quest
+- Use the command `mirror directoryname` to copy files from Box to Quest
+- Use the command `mirror -R directoryname` to copy files from Quest to Box
+The same protocol can be followed for transferring files to and from other servers with FTP/FTPS procotols enabled
+
+**Downloading files from a web server**
+Many bioinformatics resources and databases are available online but are generally too large to transfer between a personal computer and Quest. Use [wget](https://www.gnu.org/software/wget/manual/wget.html) to directly download files from web servers.
+Example: `wget -r --no-parent https://portal.nersc.gov/GEM/genomes/`
+- r recursive, downloads contents of directory
+- no-parent doesn't download from parent directory
 
 ---
 ## Resources  
