@@ -46,7 +46,7 @@ There are a few concepts and commands that are important to using Quest.
 
 **Interactive job**: Many simple tasks can be performed in a Quest interactive job. This allows you to reserve a specific amount of computing power and time to use while you're logged into a Quest terminal. You can execute commands and run programs within the basic Quest terminal. However, interactive jobs do not allow you to submit a script and let it run in the background while you work on something else. To start an interactive job, log into Quest and enter a submission command like this:  
 `srun --account=p31378 --time=03:00:00 --partition=short --mem=4G --pty bash -l`  
-More details about submitting interactive jobs are available [here](https://kb.northwestern.edu/page.php?id=69247). 
+More details about submitting interactive jobs are available [here](https://kb.northwestern.edu/page.php?id=69247).
 
 **Submitting batch jobs**: To submit a batch job, you need to have a bash file (just a text file with a .sh extension) with some information that gets sent to the scheduler, which directs your job to the correct nodes and puts your job into the queue based on priority. You can also submit an interactive job by simply submitting commands directly while logged into Quest, but it can be easy to lose your work and not be able to document or repeat your commands. The Quest knowledge base has a [helpful page](https://kb.northwestern.edu/page.php?id=69247) on submission scripts and the [bash folder](https://github.com/mckfarm/metagenomics/tree/master/bash) of this repo has many sample scripts to look over. There are a few key pieces that are required, as well as some optional lines that I recommend for every job submission:  
 
@@ -85,7 +85,7 @@ The metagenomics pipeline is a series of steps that takes raw sequence data and 
 
 Assembling contigs - Contigs are composed of overlapping reads. Contigs are assembled by comparing the sequence of each read and determining where they overlap. If the reads were obtained through paired end sequencing (both the foward and reverse strands were sequenced), then the assembly program can also assemble contigs to account for both strands.
 
-Assembling scaffolds - Contigs are used to create scaffolds, which are sequences separated by gaps of known length. Contigs have unique short sequences that indicate their relative position in a whole genome sequence. These unique sequences, referred to as mate-pairs, can be used to string the contigs together into longer sequences with gaps where the contigs did not overlap. This step is optional, and many metagenomics pipelines do not assemble scaffolds at all and just use the contigs. Although assembling scaffolds can help improve assembly and binning, [scaffolds may miss key information](https://www.pacb.com/blog/genomes-vs-gennnnes-difference-contigs-scaffolds-genome-assemblies/), particularly in the assumed gaps between contigs. 
+Assembling scaffolds - Contigs are used to create scaffolds, which are sequences separated by gaps of known length. Contigs have unique short sequences that indicate their relative position in a whole genome sequence. These unique sequences, referred to as mate-pairs, can be used to string the contigs together into longer sequences with gaps where the contigs did not overlap. This step is optional, and many metagenomics pipelines do not assemble scaffolds at all and just use the contigs. Although assembling scaffolds can help improve assembly and binning, [scaffolds may miss key information](https://www.pacb.com/blog/genomes-vs-gennnnes-difference-contigs-scaffolds-genome-assemblies/), particularly in the assumed gaps between contigs.
 
 Mapping reads - Once the scaffolds have been assembled, they can be used as a reference (index) for mapping the raw reads. In other words, the raw reads are aligned to the scaffolds to fill in the gaps. The output of read mapping is an alignment file, typically a BAM or SAM, which shows how the reads map to the scaffolds. The alignment file can be used to calculate the depth and coverage, which are important for genome binning and further quality calculations.
 
@@ -163,14 +163,14 @@ MetaPOAP is a Python script that estimates the likelihood that a metabolic pathw
 ## Helpful Quest tips  
 In addition to the commands listed in the [Quest basics](#quest-basics) section, there are a few more advanced commands that I use to make my life a bit easier.  
 
-**Dealing with tarballs/gzip files:** 
-tar -xvzf name.tar.gz 
+**Dealing with tarballs/gzip files:**   
+tar -xvzf name.tar.gz
 -x extract
 -v verbose (show whats going on)
 -z if its a gzip (gz ending), remove if you don't have tar.gz ending
 -f specify filename
 
-tar -tvf name.tar 
+tar -tvf name.tar
 - t only show file names, don't extract
 - v verbose
 - f specify filename
@@ -184,7 +184,7 @@ tar -czvf newfolder.tar.gz
 - v verbose
 - f specify filename
 
-**Transferring files to and from Box**
+**Transferring files to and from Box**  
 To move files between Quest and Box, you must be in log in node and not in an interactive job. See the [Quest KB page about file transfers](https://kb.northwestern.edu/page.php?id=70521) for more detailed info and other file transfer methods.
 - Set up an external password with Quest, which you have to use to use to use the File Transfer Protocol (FTPS)
 - Log into quest
@@ -196,11 +196,14 @@ To move files between Quest and Box, you must be in log in node and not in an in
 - Use the command `mirror -R directoryname` to copy files from Quest to Box
 The same protocol can be followed for transferring files to and from other servers with FTP/FTPS procotols enabled
 
-**Downloading files from a web server**
+**Downloading files from a web server**  
 Many bioinformatics resources and databases are available online but are generally too large to transfer between a personal computer and Quest. Use [wget](https://www.gnu.org/software/wget/manual/wget.html) to directly download files from web servers.
 Example: `wget -r --no-parent https://portal.nersc.gov/GEM/genomes/`
 - r recursive, downloads contents of directory
 - no-parent doesn't download from parent directory
+
+**Submitting jobs as an array**  
+Some programs require that each input file is entered individually rather than as a directory. Submitting a batch job as an array can make this process easier. Rather than writing out each line for each individual command, the array job can iterate through files in a directory and submit each command in parallel. The script array_example.sh shows how this works. To submit a job as an array, add the array information to the submission information: `#SBATCH --array=1-15%4`. The 1-15%4 tells the scheduler to submit 15 separate array jobs with 4 running in parallel at any given time. The number of array jobs should match the number of lines in a script or files you need to analyze. You can read more about submitting jobs as arrays [here](https://kb.northwestern.edu/page.php?id=70719). 
 
 ---
 ## Resources  
