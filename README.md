@@ -1,6 +1,6 @@
 # Metagenomics analysis on Quest
 
-This document is meant to be a resource for learning the basics of metagenomics analysis using a high performance computing cluster like Northwestern's [**Quest**](https://www.it.northwestern.edu/research/user-services/quest/). This document heavily relies on the pipeline documented by Yubo Wang as well as notes from Morgan Petrovich and Jim Griffin.  
+This document a resource for learning the basics of metagenomics analysis using a high performance computing cluster like Northwestern's [**Quest**](https://www.it.northwestern.edu/research/user-services/quest/). This document heavily relies on the pipeline documented by Yubo Wang as well as notes from Morgan Petrovich and Jim Griffin.  
 
 This document contains the following sections:
 
@@ -8,7 +8,7 @@ This document contains the following sections:
 [Quest basics](#quest-basics) - Submitting a job, basic commands, and other programming tools  
 [Metagenomics pipeline](#metagenomics-pipeline) - Steps and programs needed to turn raw data into assembled genomes  
 [Other analyses](#other-analyses) - More things to do besides assembling genomes  
-[Helpful tips for navigating Quest](#helpful-quest-tips) - More advanced tips for navigating and using Quest
+[Helpful tips for navigating Quest](#helpful-quest-tips) - More advanced tips for navigating and using Quest  
 [Resources](#resources) - Resources for learning more about metagenomics and programming  
 
 ---
