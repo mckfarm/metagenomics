@@ -25,7 +25,7 @@ The Wells group uses the following allocations:
 
 You will also be assigned your own allocation, which has 80 GB of storage and is good for storing scripts and programs.  
 
-You should plan on attending an introduction to Quest workshop and reviewing the [Quest user guide](https://kb.northwestern.edu/quest). There is also a separate orientation for the Genomics cluster, which you should be invited to after requesting access to the b1042 allocation. These orientations will provide information on the basics of Quest and how it works, writing and submitting jobs, and basic troubleshooting. You can also request individual [consultations](https://www.it.northwestern.edu/research/consult-support.html) with Research Computing Services to learn more and talk through specific questions or issues.  
+You should plan on attending an introduction to Quest workshop and reviewing the [Quest user guide](https://kb.northwestern.edu/quest). There is also a separate orientation for the Genomics cluster, which you should be invited to after requesting access to the b1042 allocation. These orientations will provide information on the basics of Quest and how it works, writing and submitting jobs, and basic troubleshooting. You can also request individual [consultations](https://www.it.northwestern.edu/research/consult-support.html) with Research Computing Services to learn more and talk through specific questions or issues. Northwestern IT has also put together a Quest workshop video [here](https://www.youtube.com/watch?v=rIFbHt_2g4s).
 
 ### Other programs  
 Once you submit the join allocation request, you should also download a few programs to help you along the way. The most important programs are related to file management, text editing, and programming.
@@ -154,10 +154,10 @@ Videos, if you find audio-visual presentations more helpful
 
 ---
 ## Other analyses  
-- Blast  
+- Blast   
 Blast is a program that compares sequences, whole sequenced genomes, and metagenome assembled genomes to existing sequences in databases. Blast can also be used to compare nucleotides to protein sequences as well as directly comparing protein sequences. Blast aligns your sequence to the reference sequences and provides an alignment score based on the similarity of your sequence to the reference. Blast can be run on individual .fa files from their [web interface](https://blast.ncbi.nlm.nih.gov/Blast.cgi) or you can install Blast databases and perform the alignment on Quest. Luckily, Blast is available on quest through the command `module load blast/2.7.1` and jobs can be submitted like any other program.
 
-- MetaPOAP
+- MetaPOAP  
 MetaPOAP is a Python script that estimates the likelihood that a metabolic pathway is present in your MAG. A full explanation of the program is available [here](https://academic.oup.com/bioinformatics/article/34/24/4284/5043007) and the program Github page is [here](https://github.com/lmward/MetaPOAP). MetaPOAP requires a metabolic pathway to be represented by robust marker genes, which can be identified in a MAG using Blast. The program uses these metabolic pathway matches as well as MAG quality data from CheckM to estimate the false positive and false negative rate of detecting the metabolic pathway of interest in a MAG. This program is very lightweight and can be run on your own computer using python. You must use Python2 (latest version = Python2.7) for this program to work.
 
 ## Helpful Quest tips  
@@ -203,7 +203,7 @@ Example: `wget -r --no-parent https://portal.nersc.gov/GEM/genomes/`
 - no-parent doesn't download from parent directory
 
 **Submitting jobs as an array**  
-Some programs require that each input file is entered individually rather than as a directory. Submitting a batch job as an array can make this process easier. Rather than writing out each line for each individual command, the array job can iterate through files in a directory and submit each command in parallel. The script array_example.sh shows how this works. To submit a job as an array, add the array information to the submission information: `#SBATCH --array=1-15%4`. The 1-15%4 tells the scheduler to submit 15 separate array jobs with 4 running in parallel at any given time. The number of array jobs should match the number of lines in a script or files you need to analyze. You can read more about submitting jobs as arrays [here](https://kb.northwestern.edu/page.php?id=70719). 
+Some programs require that each input file is entered individually rather than as a directory. Submitting a batch job as an array can make this process easier. Rather than writing out each line for each individual command, the array job can iterate through files in a directory and submit each command in parallel. The script array_example.sh shows how this works. To submit a job as an array, add the array information to the submission information: `#SBATCH --array=1-15%4`. The 1-15%4 tells the scheduler to submit 15 separate array jobs with 4 running in parallel at any given time. The number of array jobs should match the number of lines in a script or files you need to analyze. You can read more about submitting jobs as arrays [here](https://kb.northwestern.edu/page.php?id=70719).
 
 ---
 ## Resources  
