@@ -65,7 +65,7 @@ More details about submitting interactive jobs are available [here](https://kb.n
 **Useful commands**: There are a few handy commands for quickly accessing and navigating Quest that I've outlined below.
 - `ssh -X NETID@quest.it.northwestern.edu` - This is how you log into Quest, just plug in your own NETID into the command  
 - `sacct -X` - This command shows you all your current job submissions and whether they are pending, running, or failed
-- `sbatch job_script.sh` - I keep a sbatch command handy when I am first submitting or troubleshooting a job so I don't have to keep typing the same command over and over  
+- `sbatch job_script.sh` - This is how you submit job requests. 
 - `sbatch --test-only job_script.sh` - This command gives you an estimate of when your job will actually start, make sure to submit a regular `sbatch job_script.sh` when you actually want to submit your script
 - `cd /current/project/scripts` - I keep a set current directory command handy with the name of the folder where my project scripts are kept so I don't have to type this in every time I submit a job
 - `checkproject ALLOCATION` - Check the memory of an allocation
